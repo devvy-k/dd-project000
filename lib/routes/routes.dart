@@ -1,4 +1,5 @@
 import 'package:devvy_proj/home_screen.dart';
+import 'package:devvy_proj/valuation_module/tableau/form_head_table.dart';
 import 'package:devvy_proj/valuation_module/tableau/tableau_screen.dart';
 import 'package:devvy_proj/valuation_module/valuation_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,18 +20,26 @@ class RouteClass {
           )
         ),
 
-      // Valuation Module
+      // formulaire module evaluation
       GoRoute(
           path: '/module-valuation',
           pageBuilder: (context, state) => NoTransitionPage<void>(
-            child: const ValuationScreen(),
+            child: const FormHeadTableScreen(),
           )
       ),
 
+      // tableau module evaluation
       GoRoute(
         path: '/tableau',
         pageBuilder: (context, state) => NoTransitionPage<void>(
             child: const TableauScreen()
+        )
+      ),
+
+      GoRoute(
+        path: '/graphique-evaluation',
+        pageBuilder: (context, state) => NoTransitionPage<void>(
+            child: const ValuationScreen()
         )
       )
     ]

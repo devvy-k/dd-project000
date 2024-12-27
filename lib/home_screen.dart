@@ -1,4 +1,6 @@
+import 'package:devvy_proj/valuation_module/tableau/controller/tableau_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -9,6 +11,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  
+final tableauController = Get.put(TableauController());
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -37,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Valuation Graphique enjeux DD',
+                              'Evaluation Graphique enjeux DD',
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineMedium
@@ -56,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Material(
                   child: InkWell(
                     onTap: (){
-                      context.go("/tableau");
+                      context.go("/graphique-evaluation");
                     },
                     child: AnimatedContainer(
       duration: Duration(milliseconds: 500),

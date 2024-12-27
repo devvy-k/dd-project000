@@ -1,108 +1,112 @@
+import 'package:devvy_proj/valuation_module/tableau/controller/tableau_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget buildTable() {
-  return Container(
-      color: Colors.grey[200], // Couleur de fond gris clair
-      padding: const EdgeInsets.all(8.0), // Ajout d'espace autour du tableau
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch, // Assure une hauteur égale
-        children: [
-          // Première colonne : PILIER DE DURABILITÉ
-          Expanded(
-            flex: 2,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black), // Bordure noire
-                color: Colors.white, // Fond blanc
-              ),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(16.0),
-              child: const Text(
-                "PILIER DE DURABILITÉ",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8.0), // Espacement entre colonnes
+import 'package:get/get.dart';
+import 'package:get/state_manager.dart';
 
-          // Deuxième colonne : ENJEUX
-          Expanded(
-            flex: 2,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black), // Bordure noire
-                color: Colors.white, // Fond blanc
-              ),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(16.0),
-              child: const Text(
-                "ENJEUX",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8.0), // Espacement entre colonnes
+class HeadTable extends StatefulWidget {
+  const HeadTable({super.key});
 
-          // Troisième colonne : Importance des enjeux
-          Expanded(
-            flex: 3,
-            child: Column(
+  @override
+  State<HeadTable> createState() => _HeadTableState();
+}
+
+class _HeadTableState extends State<HeadTable> {
+  final TableauController tableauController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      List<String> impactValuesList = tableauController.getImpactValuesList();
+
+      return Card(
+        elevation: 4,
+        color: Colors.blueGrey[700],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            width: double.infinity,
+            height: 150,
+            child: Row(
               children: [
-                // Ligne supérieure : Importance des enjeux
+                // Pilier de durabilité
                 Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black), // Bordure noire
-                      color: Colors.white, // Fond blanc
-                    ),
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(16.0),
-                    child: const Text(
-                      "Importance des enjeux",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                  flex: 1,
+                  child: HeaderTemplate(title: "PILIERS DE DURABILITE"),
                 ),
-                const SizedBox(height: 8.0), // Espacement entre lignes
-
-                // Ligne inférieure : Conseil et Parties Prenantes
+                // Numero
                 Expanded(
-                  child: Row(
+                  flex: 1,
+                  child: HeaderTemplate(title: "Numero"),
+                  ),
+                // Enjeux
+                Expanded(
+                  flex: 3,
+                  child: HeaderTemplate(title: "ENJEUX"),
+                ),
+                Expanded(
+                  flex: 3, // Importance des enjeux prend 60% de la largeur totale
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Pour le Conseil
+                      // Titre : Importance des enjeux
                       Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black), // Bordure noire
-                            color: Colors.white, // Fond blanc
-                          ),
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(16.0),
-                          child: const Text(
-                            "Pour le Conseil",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        child: HeaderTemplate(title: "Importance des enjeux"),
                       ),
-                      const SizedBox(width: 8.0), // Espacement entre colonnes
-
-                      // Pour les parties prenantes
+                      // Conteneurs pour "Pour le conseil" et "Pour les parties prenantes"
                       Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black), // Bordure noire
-                            color: Colors.white, // Fond blanc
-                          ),
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(16.0),
-                          child: const Text(
-                            "Pour les parties prenantes",
-                            textAlign: TextAlign.center,
-                          ),
+                        flex: 3, // La section "Pour le conseil" et "Pour les parties prenantes" prend le reste
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            // Pour le conseil
+                            Expanded(
+                              flex: 5,
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: HeaderTemplate(title: tableauController.titlePartiePrenanteA.value),
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      children: List.generate(
+                                        impactValuesList.length,
+                                        (index) => Expanded(
+                                          child: HeaderTemplate(
+                                            title: impactValuesList[index],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Pour les parties prenantes
+                            Expanded(
+                              flex: 5,
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: HeaderTemplate(title: tableauController.titlePartiePrenanteB.value),
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      children: List.generate(
+                                        impactValuesList.length,
+                                        (index) => Expanded(
+                                          child: HeaderTemplate(
+                                            title: impactValuesList[index],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -111,9 +115,37 @@ Widget buildTable() {
               ],
             ),
           ),
-        ],
+        ),
+      );
+    });
+  }
+}
+
+class HeaderTemplate extends StatelessWidget {
+  final String title;
+
+  const HeaderTemplate({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        color: Colors.white,
+      ),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        textAlign: TextAlign.center,
       ),
     );
+  }
 }
+
 
 
