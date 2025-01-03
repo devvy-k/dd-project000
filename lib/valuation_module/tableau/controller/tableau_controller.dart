@@ -1,3 +1,4 @@
+import 'package:devvy_proj/valuation_module/tableau/data/models/row_data_model.dart';
 import 'package:get/state_manager.dart';
 
 class TableauController extends GetxController {
@@ -9,6 +10,9 @@ class TableauController extends GetxController {
   final piliersList = <String>[].obs;
   final qualitativeValueList = <String>[].obs;
   final numeroEnjeu = 1.obs;
+
+  final datasTable = <Map<String, dynamic>>[].obs;
+  final rowsData = <RowDataModel>[].obs;
 
   final datasList = [].obs;
 

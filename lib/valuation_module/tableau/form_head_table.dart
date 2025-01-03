@@ -352,7 +352,7 @@ void dispose() {
                       children: [
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            context.go('/');
                           },
                           child: const Text("Annuler"),
                         ),

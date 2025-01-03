@@ -1,6 +1,7 @@
 import 'package:devvy_proj/valuation_module/tableau/component/head_table.dart';
 import 'package:devvy_proj/valuation_module/tableau/controller/tableau_controller.dart';
 import 'package:devvy_proj/valuation_module/tableau/data/data_table.dart';
+import 'package:devvy_proj/valuation_module/tableau/data/models/row_data_model.dart';
 import 'package:devvy_proj/valuation_module/tableau/data/row_template.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,12 +19,12 @@ class _TableauScreenState extends State<TableauScreen> {
   final TextEditingController _enjeuFormController = TextEditingController();
   final TableauController tableauController = Get.find();
 
-  final List<Map<String, dynamic>> _rows = []; // Liste des données du tableau
   String? _selectedPilier;
 
   // Fonction pour ajouter une ligne
   void ajouterEnjeu(BuildContext context) {
-    List<String> piliers = tableauController.piliersList.value;
+    List<String> piliers = tableauController.piliersList;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -95,13 +96,27 @@ class _TableauScreenState extends State<TableauScreen> {
                     TextButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          setState(() {
-                            _rows.add({
+                          tableauController.rowsData.add(RowDataModel.fromMap(
+                            {
                               "pilier": _selectedPilier!,
-                              "numero": tableauController.numeroEnjeu.value.toString(),
+                              "numero": tableauController.numeroEnjeu.value,
                               "enjeu": _enjeuFormController.text,
-                            });
-                          });
+                              "partiePrenanteA": {
+                                  "0": false,
+                                  "1": false,
+                                  "2": false,
+                                  "3": false,
+                                  "4": false,
+                              },
+                              "partiePrenanteB": {
+                                  "0": false,
+                                  "1": false,
+                                  "2": false,
+                                  "3": false,
+                                  "4": false,
+                              },
+                            }
+                          ));
                           tableauController.numeroEnjeu.value++;
                           Navigator.of(context).pop();
                           _enjeuFormController.clear();
@@ -134,10 +149,12 @@ void _showValidationError(String message) {
 }
 
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return 
+    Obx(() {
+      return     Scaffold(
       appBar: AppBar(
         title: const Text("Tableau des Enjeux"),
       ),
@@ -158,18 +175,18 @@ void _showValidationError(String message) {
           ),
           // Tableau avec l'en-tête et les lignes
           Expanded(
-            child: Column(
+            child:  Column(
               children: [
                 const HeadTable(), // En-tête du tableau
                 Expanded(
                   child: ListView.builder(
-                    itemCount: _rows.length,
+                    itemCount: tableauController.rowsData.length,
                     itemBuilder: (context, index) {
                       return RowTemplate(
-                        dataMap: _rows[index],
+                        rowData: tableauController.rowsData[index],
                       );
                     },
-                  ),
+                  )
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -212,11 +229,13 @@ void _showValidationError(String message) {
                   ],
                 )
               ],
-            ),
+            )
           ),
         ],
       ),
     );
+    },);
+
   }
 }
 
