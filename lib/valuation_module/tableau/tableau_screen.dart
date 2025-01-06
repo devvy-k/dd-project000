@@ -221,6 +221,7 @@ void _showValidationError(String message) {
 
                               // Fermer le dialogue et naviguer vers la page suivante
                       if(validateAllEnjeux()){
+                      //debugDumpRenderTree();
                       context.go('/graphique-evaluation');
                       
                       }

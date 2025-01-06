@@ -31,12 +31,27 @@ class _RowTemplateState extends State<RowTemplate> {
               // Pilier de durabilité
               Expanded(
                 flex: 1,
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                  ),
-                  child: Text(widget.rowData.pilier)
+                child: Row(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            _deleteRow(widget.rowData.numeroEnjeu);
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(widget.rowData.pilier
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
               // Numéro
@@ -99,7 +114,7 @@ class _RowTemplateState extends State<RowTemplate> {
       }) {
     return evaluationMap.keys.map((key) {
       return _buildEvaluationBox(
-        label: "",
+        label: key,
         isSelected: evaluationMap[key] ?? false,
         onTap: () => _updateEvaluation(key, isForParties: isForParties),
         color: _getEvaluationColor(key),
@@ -133,6 +148,23 @@ class _RowTemplateState extends State<RowTemplate> {
         ),
       );
     }
+
+  /// Supprime une ligne et met à jour les numéros
+  void _deleteRow(int numeroEnjeu) {
+    setState(() {
+      // Supprime la ligne ciblée
+      tableauController.rowsData.removeWhere((row) => row.numeroEnjeu == numeroEnjeu);
+      tableauController.enjeuxDataGraph.removeWhere((row) => row[0] == numeroEnjeu);
+
+      // Met à jour les numéros des lignes restantes
+      for (int i = 0; i < tableauController.rowsData.length; i++) {
+        tableauController.rowsData[i].numeroEnjeu = i + 1; // Numérotation à partir de 1
+      }
+
+      // Met à jour le compteur de numéro dans le contrôleur
+      tableauController.numeroEnjeu.value--;
+    });
+  }
 
 void _updateEvaluation(String value, {required bool isForParties}) {
   setState(() {
@@ -202,15 +234,15 @@ void _updateEvaluation(String value, {required bool isForParties}) {
   int _getEvaluationIndex(String evaluation) {
     switch (evaluation) {
       case "0":
-        return 0;
+        return -1;
       case "1":
-        return 1;
+        return 0;
       case "2":
-        return 2;
+        return 1;
       case "3":
-        return 3;
+        return 2;
       case "4":
-        return 4;
+        return 3;
       default:
         return -1;
     }

@@ -215,7 +215,7 @@ void dispose() {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Intitulé partie prenante A (axe X)",
+                      "Intitulé partie prenante A (axe Y)",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.black87),
                     ),
@@ -229,7 +229,7 @@ void dispose() {
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      "Intitulé partie prenante B (axe Y)",
+                      "Intitulé partie prenante B (axe X)",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.black87),
                     ),
