@@ -26,11 +26,22 @@ class _ValuationScreenState extends State<ValuationScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    
+
     List<String> impactValuesList = tableauController.getImpactValuesList();
 
     double gridSize = MediaQuery.of(context).size.width * 0.9;
-    double enjeuxListColumnHeight = MediaQuery.of(context).size.width * 0.5;
     gridSize = gridSize > 400 ? 600 : gridSize; // Limitez la taille maximale
+
+        // Diviser les enjeux en plusieurs colonnes
+    List<RowDataModel> rows = tableauController.rowsData;
+    int itemsPerColumn = (gridSize ~/ 40).toInt();
+
+    List<List<RowDataModel>> groupedEnjeux = [];
+    for (int i = 0; i < rows.length; i += itemsPerColumn) {
+      groupedEnjeux.add(rows.sublist(i, i + itemsPerColumn > rows.length ? rows.length : i + itemsPerColumn));
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -130,7 +141,9 @@ class _ValuationScreenState extends State<ValuationScreen> {
                                                       width: 2,
                                                     ),
                                                   ),
-                                                  child: Stack(
+                                                  child:
+                                                  _enjeuxData.isNotEmpty ? 
+                                                  Stack(
                                                     children: [
                                                           ..._enjeuxData
                                                           .where((enjeu) =>
@@ -175,7 +188,8 @@ class _ValuationScreenState extends State<ValuationScreen> {
                                                       ),
                                                       
                                                     ],
-                                                  ),
+                                                  )
+                                                  : SizedBox(),
                                                 ),
                                               );
                                             }),
@@ -249,7 +263,7 @@ Expanded(
       border: Border.all(color: Colors.black),
     ),
     child: Padding(
-      padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0, bottom: 5.0),
+      padding: const EdgeInsets.only(top: 3.0, right: 8.0, left: 8.0, bottom: 3.0),
       child: Column(
         children: [
           Row(
@@ -263,15 +277,69 @@ Expanded(
             flex: 3,
             child: Row(
               children: [
-                SizedBox(
-                  width: gridSize,
-                  child: EnjeuxList(tableauController: tableauController, maxColumnHeight: enjeuxListColumnHeight,)
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                  const Text(
+                    "Liste des enjeux",
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 5),
+                              // Colonnes côte à côte
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List.generate(groupedEnjeux.length, (colIndex) {
+                  return Expanded(
+                    child: Column(
+                      children: List.generate(groupedEnjeux[colIndex].length, (rowIndex) {
+                        final rowData = groupedEnjeux[colIndex][rowIndex];
+                              return Row(
+                              children: [
+                                // Cercle avec le numéro de l'enjeu
+                                Container(
+                  width: 30,
+                  height: 20,
+                  margin: const EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    color: _getEnjeuColor(rowData),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      "${rowData.numeroEnjeu}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                                ),
+                                Expanded(
+                  child: 
+                    Text(
+                      rowData.enjeu,
+                      style: const TextStyle(fontSize: 12.5),
+                    ),
+                                ),
+                              ],
+                            );
+                      }),
+                    ),
+                  );
+                                }),
+                              ),
+                            ],
+                          ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 10),
-      
           // Deuxième ligne : Typologie et Priorité
           Expanded(
             flex: 1,
@@ -282,27 +350,48 @@ Expanded(
                 Expanded(
                   flex: 1,
       child: SizedBox(
-        height: 200,
+        height: 110,
         child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0), // Ajouter du padding autour des éléments
-          child: Wrap(
-            runSpacing: 5.0,
+          padding: const EdgeInsets.all(10.0), // Ajouter du padding autour des éléments
+          child: Column(
             children: [
-              const Text(
-                "Typologie des enjeux",
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+              Row(
+                children: [
+                  const Text(
+                    "Typologie des enjeux",
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
-              _buildPilierLegendItem(Colors.green, "Environnement"),
-              _buildPilierLegendItem(Colors.blue, "Social"),
-              _buildPilierLegendItem(
-                const Color.fromARGB(169, 255, 136, 0),
-                "Economie",
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          _buildPilierLegendItem(Colors.green, "Environnement"),
+                          SizedBox(width: 30,),
+                          _buildPilierLegendItem(Colors.blue, "Social"),
+                        ],
+                      ),
+                SizedBox(height: 15,),
+                      Row(
+                children: [
+                  _buildPilierLegendItem(
+                    const Color.fromARGB(169, 255, 136, 0),
+                    "Economie",
+                  ),
+                ],
+              ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
@@ -317,28 +406,50 @@ Expanded(
                 Expanded(
                   flex: 1,
                   child: SizedBox(
-                    height: 200,
+                    height: 110,
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Wrap(
-                          runSpacing: 5.0,
-                          children: [
-                            const Text(
-                              "Priorités",
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 5),
-                            _buildPriorityLegendItem(Colors.red, "Priorité élevée"),
-                            _buildPriorityLegendItem(Colors.orange, "Priorité moyenne"),
-                            _buildPriorityLegendItem(Colors.blue, "Priorité faible"),
-                            _buildPriorityLegendItem(Colors.green, "Priorité très faible"),
-                          ],
-                        ),
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 8.0, right: 10.0, left: 10.0),
+                        child: 
+                        Column(
+            children: [
+              Row(
+                children: [
+                  const Text(
+                    "Priorités",
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          _buildPriorityLegendItem(Colors.red, "Priorité élevée"),
+                          SizedBox(width: 30,),
+                          _buildPriorityLegendItem(
+                    Colors.blue,
+                    "Priorité faible",
+                  ),
+                        ],
+                      ),
+                      SizedBox(height: 2,),
+                      _buildPriorityLegendItem(Colors.orange, "Priorité moyenne"),
+                      SizedBox(height: 2,),
+                      _buildPriorityLegendItem(Colors.green, "Priorité très faible"),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
                       ),
                     ),
                   ),
@@ -594,7 +705,7 @@ class EnjeuxList extends StatelessWidget {
   Widget build(BuildContext context) {
     // Diviser les enjeux en plusieurs colonnes
     List<RowDataModel> rows = tableauController.rowsData;
-    int itemsPerColumn = (maxColumnHeight ~/ 50).toInt(); // En supposant une hauteur d'élément de 50
+    int itemsPerColumn = (maxColumnHeight ~/ 30).toInt(); // En supposant une hauteur d'élément de 50
 
     List<List<RowDataModel>> groupedEnjeux = [];
     for (int i = 0; i < rows.length; i += itemsPerColumn) {
@@ -602,60 +713,63 @@ class EnjeuxList extends StatelessWidget {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Liste des enjeux",
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 10),
-        // Colonnes côte à côte
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(groupedEnjeux.length, (colIndex) {
-            return Expanded(
-              child: Column(
-                children: List.generate(groupedEnjeux[colIndex].length, (rowIndex) {
-                  final rowData = groupedEnjeux[colIndex][rowIndex];
-                        return Row(
         children: [
-          // Cercle avec le numéro de l'enjeu
-          Container(
-            width: 30,
-            height: 20,
-            margin: const EdgeInsets.only(right: 10),
-            decoration: BoxDecoration(
-              color: _getEnjeuColor(rowData),
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: Text(
-                "${rowData.numeroEnjeu}",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Text(
+                "Liste des enjeux",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          // Colonnes côte à côte
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(groupedEnjeux.length, (colIndex) {
+              return Expanded(
+                child: Column(
+                  children: List.generate(groupedEnjeux[colIndex].length, (rowIndex) {
+                    final rowData = groupedEnjeux[colIndex][rowIndex];
+                          return Row(
+          children: [
+            // Cercle avec le numéro de l'enjeu
+            Container(
+              width: 30,
+              height: 20,
+              margin: const EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                color: _getEnjeuColor(rowData),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  "${rowData.numeroEnjeu}",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
-          ),
-          // Texte avec défilement horizontal
-          Expanded(
-            child: 
-              Text(
-                rowData.enjeu,
-                maxLines: 2,
-                style: const TextStyle(fontSize: 12.5),
-              ),
+            // Texte avec défilement horizontal
+            Expanded(
+              child: 
+                Text(
+                  rowData.enjeu,
+                  style: const TextStyle(fontSize: 12.5),
+                ),
+            ),
+          ],
+        );
+                  }),
+                ),
+              );
+            }),
           ),
         ],
       );
-                }),
-              ),
-            );
-          }),
-        ),
-      ],
-    );
   }
 
 Color _getEnjeuColor(RowDataModel rowEnjeu) {

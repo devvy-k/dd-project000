@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:devvy_proj/valuation_module/tableau/component/head_table.dart';
 import 'package:devvy_proj/valuation_module/tableau/controller/tableau_controller.dart';
-import 'package:devvy_proj/valuation_module/tableau/data/data_table.dart';
+import 'package:devvy_proj/valuation_module/tableau/data/data_test.dart';
 import 'package:devvy_proj/valuation_module/tableau/data/models/row_data_model.dart';
 import 'package:devvy_proj/valuation_module/tableau/data/row_template.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,8 @@ class _TableauScreenState extends State<TableauScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _enjeuFormController = TextEditingController();
   final TableauController tableauController = Get.find();
+
+  final test = Test();
 
   String? _selectedPilier;
 
@@ -156,7 +160,8 @@ void _showValidationError(String message) {
     Obx(() {
       return     Scaffold(
       appBar: AppBar(
-        title: const Text("Tableau des Enjeux"),
+        title: 
+            const Text("Tableau des Enjeux"),
       ),
       body: Column(
         children: [
@@ -166,9 +171,22 @@ void _showValidationError(String message) {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                ElevatedButton(
-                  onPressed: () => ajouterEnjeu(context),
-                  child: const Text("Ajouter une ligne"),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => ajouterEnjeu(context),
+                      child: const Text("Ajouter une ligne"),
+                    ),
+                    IconButton(onPressed: (){
+                      test.convertEnjeuxToRows(test.dataTest);
+                      tableauController.rowsData.value = test.listDataRows;
+                      log("${tableauController.rowsData}");
+                      tableauController.numeroEnjeu.value = test.listDataRows.length;
+                    }, icon: Icon(
+                      Icons.add,
+                      color: Colors.orange,
+                    ))
+                  ],
                 ),
               ],
             ),
