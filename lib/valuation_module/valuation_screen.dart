@@ -1,13 +1,10 @@
 
 
-import 'dart:math';
-
 import 'package:devvy_proj/valuation_module/services/database_service.dart';
 import 'package:devvy_proj/valuation_module/tableau/controller/tableau_controller.dart';
 import 'package:devvy_proj/valuation_module/tableau/data/models/row_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 
 class ValuationScreen extends StatefulWidget {
@@ -350,20 +347,20 @@ Expanded(
                 Expanded(
                   flex: 1,
       child: SizedBox(
-        height: 110,
+        height: 115,
         child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(10.0), // Ajouter du padding autour des éléments
+          padding: const EdgeInsets.only(top: 2.0, bottom: 2.0, right: 10.0, left: 10.0), // Ajouter du padding autour des éléments
           child: Column(
             children: [
               Row(
                 children: [
                   const Text(
                     "Typologie des enjeux",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -373,22 +370,14 @@ Expanded(
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
                           _buildPilierLegendItem(Colors.green, "Environnement"),
-                          SizedBox(width: 30,),
-                          _buildPilierLegendItem(Colors.blue, "Social"),
-                        ],
-                      ),
-                SizedBox(height: 15,),
-                      Row(
-                children: [
-                  _buildPilierLegendItem(
+                          SizedBox(height: 5,),
+                          _buildPilierLegendItem(
                     const Color.fromARGB(169, 255, 136, 0),
                     "Economie",
                   ),
-                ],
-              ),
+                  SizedBox(height: 5,),
+                          _buildPilierLegendItem(Colors.blue, "Social"),
                     ],
                   ),
                 ],
@@ -406,13 +395,13 @@ Expanded(
                 Expanded(
                   flex: 1,
                   child: SizedBox(
-                    height: 110,
+                    height: 115,
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 10.0, bottom: 8.0, right: 10.0, left: 10.0),
+                        padding: const EdgeInsets.only(top: 2.0, bottom: 2.0, right: 10.0, left: 10.0),
                         child: 
                         Column(
             children: [
@@ -420,29 +409,26 @@ Expanded(
                 children: [
                   const Text(
                     "Priorités",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 3),
               Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          _buildPriorityLegendItem(Colors.red, "Priorité élevée"),
-                          SizedBox(width: 30,),
-                          _buildPriorityLegendItem(
-                    Colors.blue,
-                    "Priorité faible",
-                  ),
-                        ],
-                      ),
+
+                      _buildPriorityLegendItem(Colors.red, "Priorité élevée"),
                       SizedBox(height: 2,),
                       _buildPriorityLegendItem(Colors.orange, "Priorité moyenne"),
                       SizedBox(height: 2,),
+                      _buildPriorityLegendItem(
+                    Colors.blue,
+                    "Priorité faible",
+                  ),
+                  SizedBox(height: 2,),
                       _buildPriorityLegendItem(Colors.green, "Priorité très faible"),
                     ],
                   ),
@@ -521,7 +507,7 @@ Widget _buildPriorityLegendItem(Color color, String label) {
       const SizedBox(width: 8),
       Text(
         label,
-        style: const TextStyle(fontSize: 14),
+        style: const TextStyle(fontSize: 12.5),
       ),
     ],
   );
@@ -541,7 +527,7 @@ Widget _buildPilierLegendItem(Color color, String label) {
       const SizedBox(width: 8),
       Text(
         label,
-        style: const TextStyle(fontSize: 14),
+        style: const TextStyle(fontSize: 12.5),
       ),
     ],
   );

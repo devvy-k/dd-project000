@@ -177,15 +177,15 @@ void _showValidationError(String message) {
                       onPressed: () => ajouterEnjeu(context),
                       child: const Text("Ajouter une ligne"),
                     ),
-                    IconButton(onPressed: (){
-                      test.convertEnjeuxToRows(test.dataTest);
-                      tableauController.rowsData.value = test.listDataRows;
-                      log("${tableauController.rowsData}");
-                      tableauController.numeroEnjeu.value = test.listDataRows.length;
-                    }, icon: Icon(
-                      Icons.add,
-                      color: Colors.orange,
-                    ))
+                    // IconButton(onPressed: (){
+                    //   test.convertEnjeuxToRows(test.dataTest);
+                    //   tableauController.rowsData.value = test.listDataRows;
+                    //   log("${tableauController.rowsData}");
+                    //   tableauController.numeroEnjeu.value = test.listDataRows.length;
+                    // }, icon: Icon(
+                    //   Icons.add,
+                    //   color: Colors.orange,
+                    // ))
                   ],
                 ),
               ],
