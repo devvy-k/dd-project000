@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:devvy_proj/valuation_module/tableau/component/head_table.dart';
-import 'package:devvy_proj/valuation_module/tableau/controller/tableau_controller.dart';
+import 'package:devvy_proj/valuation_module/controller/tableau_controller.dart';
 import 'package:devvy_proj/valuation_module/tableau/data/data_test.dart';
 import 'package:devvy_proj/valuation_module/tableau/data/models/row_data_model.dart';
-import 'package:devvy_proj/valuation_module/tableau/data/row_template.dart';
+import 'package:devvy_proj/valuation_module/tableau/component/row_template.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -177,15 +177,15 @@ void _showValidationError(String message) {
                       onPressed: () => ajouterEnjeu(context),
                       child: const Text("Ajouter une ligne"),
                     ),
-                    // IconButton(onPressed: (){
-                    //   test.convertEnjeuxToRows(test.dataTest);
-                    //   tableauController.rowsData.value = test.listDataRows;
-                    //   log("${tableauController.rowsData}");
-                    //   tableauController.numeroEnjeu.value = test.listDataRows.length;
-                    // }, icon: Icon(
-                    //   Icons.add,
-                    //   color: Colors.orange,
-                    // ))
+                    IconButton(onPressed: (){
+                      test.convertEnjeuxToRows(test.dataTest);
+                      tableauController.rowsData.value = test.listDataRows;
+                      log("${tableauController.rowsData}");
+                      tableauController.numeroEnjeu.value = test.listDataRows.length;
+                    }, icon: Icon(
+                      Icons.add,
+                      color: Colors.orange,
+                    ))
                   ],
                 ),
               ],

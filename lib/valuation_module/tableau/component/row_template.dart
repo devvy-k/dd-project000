@@ -1,4 +1,4 @@
-import 'package:devvy_proj/valuation_module/tableau/controller/tableau_controller.dart';
+import 'package:devvy_proj/valuation_module/controller/tableau_controller.dart';
 import 'package:devvy_proj/valuation_module/tableau/data/models/row_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

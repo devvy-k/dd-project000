@@ -1,7 +1,8 @@
 
 
+import 'package:devvy_proj/utils/widgets/diagonal_painter.dart';
 import 'package:devvy_proj/valuation_module/services/database_service.dart';
-import 'package:devvy_proj/valuation_module/tableau/controller/tableau_controller.dart';
+import 'package:devvy_proj/valuation_module/controller/tableau_controller.dart';
 import 'package:devvy_proj/valuation_module/tableau/data/models/row_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -59,7 +60,7 @@ class _ValuationScreenState extends State<ValuationScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             // Grille et légende
@@ -198,7 +199,7 @@ class _ValuationScreenState extends State<ValuationScreen> {
                                     // Diagonale
                                     CustomPaint(
                                       size: Size(gridSize, gridSize),
-                                      painter: _DiagonalPainter(),
+                                      painter: DiagonalPainter(),
                                     ),
                                   ],
                                 ),
@@ -557,27 +558,6 @@ Color _getEnjeuColor(RowDataModel rowEnjeu) {
 
 
 
-}
-
-class _DiagonalPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 1;
-
-    // Tracer une diagonale à partir de (0, 0) jusqu'à (taille, taille)
-    canvas.drawLine(
-      Offset(0, size.height),
-      Offset(size.width, 0),
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
-  }
 }
 
 class _ArrowAxisPainter extends CustomPainter {

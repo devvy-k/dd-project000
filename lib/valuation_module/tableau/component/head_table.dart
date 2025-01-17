@@ -1,9 +1,7 @@
-import 'package:devvy_proj/valuation_module/tableau/controller/tableau_controller.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:devvy_proj/utils/widgets/head_table_container.dart';
+import 'package:devvy_proj/valuation_module/controller/tableau_controller.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 
 class HeadTable extends StatefulWidget {
   const HeadTable({super.key});
@@ -118,32 +116,6 @@ class _HeadTableState extends State<HeadTable> {
         ),
       );
     });
-  }
-}
-
-class HeaderTemplate extends StatelessWidget {
-  final String title;
-
-  const HeaderTemplate({super.key, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        color: Colors.white,
-      ),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
   }
 }
 
