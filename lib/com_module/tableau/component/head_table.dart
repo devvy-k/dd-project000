@@ -25,7 +25,7 @@ class _HeadTableState extends State<HeadTable> {
                 // Numero
                 Expanded(
                   flex: 1,
-                  child: HeaderTemplate(title: "Numero"),
+                  child: HeaderTemplate(title: "Numéro"),
                   ),
                 // Enjeux
                 Expanded(
@@ -34,7 +34,7 @@ class _HeadTableState extends State<HeadTable> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: HeaderTemplate(title: "Interet"),
+                  child: HeaderTemplate(title: "Intérêt"),
                 ),
                 Expanded(
                   flex: 1,

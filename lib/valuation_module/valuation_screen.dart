@@ -25,8 +25,6 @@ class _ValuationScreenState extends State<ValuationScreen> {
   @override
   Widget build(BuildContext context) {
 
-    
-
     List<String> impactValuesList = tableauController.getImpactValuesList();
 
     double gridSize = MediaQuery.of(context).size.width * 0.9;

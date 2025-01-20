@@ -1,6 +1,6 @@
 
-import 'package:devvy_proj/valuation_module/controller/tableau_controller.dart' as tableauControllerEnjeux;
-import 'package:devvy_proj/com_module/controller/tableau_controller.dart' as tableauControllerCom;
+import 'package:devvy_proj/com_module/controller/tableau_controller.dart';
+import 'package:devvy_proj/valuation_module/controller/tableau_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -14,8 +14,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   
-final tabControllerEnjeux = Get.put(tableauControllerEnjeux.TableauController());
-final tabControllerCom = Get.put(tableauControllerCom.TableauController());
+final tabControllerEnjeux = Get.put(TableauController()); 
+final tabControllerCom = Get.put(TableauControllerCom());
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ final tabControllerCom = Get.put(tableauControllerCom.TableauController());
                   child: Material(
                     child: InkWell(
                       onTap: (){
-                        context.go("/graphique-strategie-com");
+                        context.go("/tableau-com");
                       },
                       child: AnimatedContainer(
         duration: Duration(milliseconds: 500),

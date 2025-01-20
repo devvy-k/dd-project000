@@ -1,47 +1,42 @@
 import 'dart:developer';
 
-import 'package:devvy_proj/valuation_module/tableau/component/head_table.dart';
-import 'package:devvy_proj/valuation_module/controller/tableau_controller.dart';
-import 'package:devvy_proj/valuation_module/tableau/data/data_test.dart';
-import 'package:devvy_proj/valuation_module/tableau/data/models/row_data_model.dart';
-import 'package:devvy_proj/valuation_module/tableau/component/row_template.dart';
+import 'package:devvy_proj/com_module/controller/tableau_controller.dart';
+import 'package:devvy_proj/com_module/tableau/component/head_table.dart';
+import 'package:devvy_proj/com_module/tableau/component/row_template.dart';
+import 'package:devvy_proj/com_module/tableau/data/data_test.dart';
+import 'package:devvy_proj/com_module/tableau/data/models/row_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class TableauScreen extends StatefulWidget {
-  const TableauScreen({super.key});
+class TableauScreenCom extends StatefulWidget {
+  const TableauScreenCom({super.key});
 
   @override
-  State<TableauScreen> createState() => _TableauScreenState();
+  State<TableauScreenCom> createState() => _TableauScreenComState();
 }
 
-class _TableauScreenState extends State<TableauScreen> {
+class _TableauScreenComState extends State<TableauScreenCom> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _enjeuFormController = TextEditingController();
-  final TableauController tableauController = Get.find();
+  final TextEditingController _textEditingController = TextEditingController();
+  final TableauControllerCom tableauController = Get.find();
 
-  final test = TestModuleVal();
+  final test = TestModuleCom();
 
-  String? _selectedPilier;
-
-  // Fonction pour ajouter une ligne
-  void ajouterEnjeu(BuildContext context) {
-    List<String> piliers = tableauController.piliersList;
-
+  void ajouterPartiePrenante(BuildContext context){
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
+      context: context, 
+      builder: (BuildContext context){
         return AlertDialog(
-          title: const Text("Ajouter un enjeu"),
+          title: Text('Ajouter une partie prenante'),
           content: Form(
             key: _formKey,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Entrez l'intitulé de l'enjeu",
+                  "Entrez l'intitulé de la partie prenante",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
@@ -49,7 +44,7 @@ class _TableauScreenState extends State<TableauScreen> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: _enjeuFormController,
+                  controller: _textEditingController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Entrez un intitulé',
@@ -57,38 +52,6 @@ class _TableauScreenState extends State<TableauScreen> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Veuillez entrer un intitulé.";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Sélectionnez un pilier",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
-                  value: _selectedPilier,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  items: piliers.map((pilier) {
-                    return DropdownMenuItem(
-                      value: pilier,
-                      child: Text(pilier),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedPilier = value;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Veuillez sélectionner un pilier.";
                     }
                     return null;
                   },
@@ -102,66 +65,41 @@ class _TableauScreenState extends State<TableauScreen> {
                         if (_formKey.currentState!.validate()) {
                           tableauController.rowsData.add(RowDataModel.fromMap(
                             {
-                              "pilier": _selectedPilier!,
-                              "numero": tableauController.numeroEnjeu.value,
-                              "enjeu": _enjeuFormController.text,
-                              "partiePrenanteA": {
-                                  "0": false,
-                                  "1": false,
-                                  "2": false,
-                                  "3": false,
-                                  "4": false,
-                              },
-                              "partiePrenanteB": {
-                                  "0": false,
-                                  "1": false,
-                                  "2": false,
-                                  "3": false,
-                                  "4": false,
-                              },
+                              "partiePrenante": _textEditingController.text,
+                              "numero": tableauController.numeroPartiePrenante.value,
+                              "influence": 0,
+                              "interet": 0,
                             }
                           ));
-                          tableauController.numeroEnjeu.value++;
+                          tableauController.numeroPartiePrenante.value++;
                           Navigator.of(context).pop();
-                          _enjeuFormController.clear();
-                          _selectedPilier = null;
+                          _textEditingController.clear();
                         }
                       },
                       child: const Text("Valider"),
                     ),
                   ],
-                ),
-              ],
+                ),                
+                ]            
+            )
             ),
-          ),
         );
-      },
-    );
+      }
+      );
   }
-
-bool validateAllEnjeux() {
+  
+  bool validateAllEnjeux() {
   return true;
 }
-
-void _showValidationError(String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      backgroundColor: Colors.red,
-    ),
-  );
-}
-
-
+  
   @override
   Widget build(BuildContext context) {
-
     return 
-    Obx(() {
+        Obx(() {
       return     Scaffold(
       appBar: AppBar(
         title: 
-            const Text("Tableau des Enjeux"),
+            const Text("Tableau des Parties Prenantes"),
       ),
       body: Column(
         children: [
@@ -174,14 +112,14 @@ void _showValidationError(String message) {
                 Row(
                   children: [
                     ElevatedButton(
-                      onPressed: () => ajouterEnjeu(context),
+                      onPressed: () => ajouterPartiePrenante(context),
                       child: const Text("Ajouter une ligne"),
                     ),
                     IconButton(onPressed: (){
-                      test.convertEnjeuxToRows(test.dataTest);
+                      test.convertPPtoRows(test.dataTest);
                       tableauController.rowsData.value = test.listDataRows;
                       log("${tableauController.rowsData}");
-                      tableauController.numeroEnjeu.value = test.listDataRows.length;
+                      tableauController.numeroPartiePrenante.value = test.listDataRows.length;
                     }, icon: Icon(
                       Icons.add,
                       color: Colors.orange,
@@ -240,7 +178,7 @@ void _showValidationError(String message) {
                               // Fermer le dialogue et naviguer vers la page suivante
                       if(validateAllEnjeux()){
                       //debugDumpRenderTree();
-                      context.go('/graphique-evaluation');
+                      context.go('/graphique-strategie-com');
                       
                       }
                       
@@ -254,8 +192,5 @@ void _showValidationError(String message) {
       ),
     );
     },);
-
   }
 }
-
-

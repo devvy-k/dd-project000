@@ -1,5 +1,6 @@
 
 import 'package:devvy_proj/com_module/graph_screen.dart';
+import 'package:devvy_proj/com_module/tableau/tableau_screen.dart';
 import 'package:devvy_proj/home_screen.dart';
 import 'package:devvy_proj/valuation_module/tableau/form_head_table.dart';
 import 'package:devvy_proj/valuation_module/tableau/tableau_screen.dart';
@@ -35,6 +36,13 @@ class RouteClass {
         path: '/tableau',
         pageBuilder: (context, state) => NoTransitionPage<void>(
             child: const TableauScreen()
+        )
+      ),
+
+        GoRoute(
+        path: '/tableau-com',
+        pageBuilder: (context, state) => NoTransitionPage<void>(
+            child: TableauScreenCom()
         )
       ),
 

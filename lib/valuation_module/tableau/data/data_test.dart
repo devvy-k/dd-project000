@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:devvy_proj/valuation_module/tableau/data/models/row_data_model.dart';
-import 'package:devvy_proj/valuation_module/tableau/data/row_template.dart';
+import 'package:devvy_proj/valuation_module/tableau/component/row_template.dart';
 
-class Test {
+class TestModuleVal {
 
 final List<RowDataModel> listDataRows = [];
 
