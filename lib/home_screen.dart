@@ -20,6 +20,13 @@ final tabControllerCom = Get.put(TableauControllerCom());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          children: [
+            ElevatedButton(onPressed: () => context.go('/ui-test'), child: Text('Go to Ui test'))
+          ],
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(100, 50, 100, 20),
         child: Column(

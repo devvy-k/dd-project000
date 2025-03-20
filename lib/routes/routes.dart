@@ -2,6 +2,7 @@
 import 'package:devvy_proj/com_module/graph_screen.dart';
 import 'package:devvy_proj/com_module/tableau/tableau_screen.dart';
 import 'package:devvy_proj/home_screen.dart';
+import 'package:devvy_proj/ui_test.dart';
 import 'package:devvy_proj/valuation_module/tableau/form_head_table.dart';
 import 'package:devvy_proj/valuation_module/tableau/tableau_screen.dart';
 import 'package:devvy_proj/valuation_module/valuation_screen.dart';
@@ -56,6 +57,12 @@ class RouteClass {
         path: '/graphique-strategie-com',
         pageBuilder: (context, state) => NoTransitionPage<void>(
             child: const GraphScreen()
+        )
+      ),
+      GoRoute(
+        path: '/ui-test',
+        pageBuilder: (context, state) => NoTransitionPage<void>(
+            child: const UiTest()
         )
       )
     ]

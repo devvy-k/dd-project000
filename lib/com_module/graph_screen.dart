@@ -203,7 +203,7 @@ class _GraphScreenState extends State<GraphScreen> {
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 12
+                                                  fontSize: 15
                                                 ),
                                               ),
                                             ),
@@ -212,7 +212,7 @@ class _GraphScreenState extends State<GraphScreen> {
                                             child: 
                                               Text(
                                                 rowData.partiePrenante,
-                                                style: const TextStyle(fontSize: 12.5),
+                                                style: const TextStyle(fontSize: 15.5),
                                               ),
                                                           ),
                                           ],
@@ -346,7 +346,7 @@ Widget _buildBubbles(double gridSize) {
           ),
           child: Center(
             child: Text(
-              enjeu[0].toString(),
+              "S${enjeu[0].toString()}",
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
